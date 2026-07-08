@@ -1,0 +1,18 @@
+# Kids' behavioral observation log stays on this Mac, never in the repo.
+OBSERVED_SESSIONS.md
+
+node_modules
+dist
+dist-ssr
+dev-dist
+*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+src/data/assets.generated.json

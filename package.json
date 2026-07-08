@@ -1,0 +1,21 @@
+{
+  "name": "greek-smoothie-game",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build-asset-index.mjs && vite",
+    "build": "node scripts/build-asset-index.mjs && tsc && vite build",
+    "preview": "vite preview",
+    "build:assets": "node scripts/build-asset-index.mjs",
+    "verify": "node scripts/lint-greek.mjs && node scripts/lint-dashes.mjs && npm run build && node scripts/check-budget.mjs"
+  },
+  "dependencies": {
+    "idb-keyval": "^6.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vite": "^5.2.0",
+    "vite-plugin-pwa": "^0.20.0"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "phrases": [
+    { "id": "L1-apple",      "level": 1, "el": "Βάλε ένα μήλο στο μπλέντερ!",      "translit": "Vale ena milo sto blender!",       "en": "Put an apple in the blender!",      "audio": "phrases/L1-apple.m4a",      "answers": ["apple"] },
+    { "id": "L1-banana",     "level": 1, "el": "Βάλε μία μπανάνα στο μπλέντερ!",   "translit": "Vale mia banana sto blender!",     "en": "Put a banana in the blender!",      "audio": "phrases/L1-banana.m4a",     "answers": ["banana"] },
+    { "id": "L1-orange",     "level": 1, "el": "Βάλε ένα πορτοκάλι στο μπλέντερ!", "translit": "Vale ena portokali sto blender!",  "en": "Put an orange in the blender!",     "audio": "phrases/L1-orange.m4a",     "answers": ["orange"] },
+    { "id": "L1-grape",      "level": 1, "el": "Βάλε ένα σταφύλι στο μπλέντερ!",   "translit": "Vale ena stafili sto blender!",    "en": "Put a grape in the blender!",       "audio": "phrases/L1-grape.m4a",      "answers": ["grape"] },
+    { "id": "L1-strawberry", "level": 1, "el": "Βάλε μία φράουλα στο μπλέντερ!",   "translit": "Vale mia fraoula sto blender!",    "en": "Put a strawberry in the blender!",  "audio": "phrases/L1-strawberry.m4a", "answers": ["strawberry"] },
+    { "id": "L1-watermelon", "level": 1, "el": "Βάλε ένα καρπούζι στο μπλέντερ!",  "translit": "Vale ena karpouzi sto blender!",   "en": "Put a watermelon in the blender!",  "audio": "phrases/L1-watermelon.m4a", "answers": ["watermelon"] },
+    { "id": "L1-lemon",      "level": 1, "el": "Βάλε ένα λεμόνι στο μπλέντερ!",    "translit": "Vale ena lemoni sto blender!",     "en": "Put a lemon in the blender!",       "audio": "phrases/L1-lemon.m4a",      "answers": ["lemon"] },
+    { "id": "L1-pear",       "level": 1, "el": "Βάλε ένα αχλάδι στο μπλέντερ!",    "translit": "Vale ena ahladi sto blender!",     "en": "Put a pear in the blender!",        "audio": "phrases/L1-pear.m4a",       "answers": ["pear"] },
+
+    { "id": "L2-apple",      "level": 2, "el": "Θέλω ένα μήλο!",                  "translit": "Thelo ena milo!",                   "en": "I want an apple!",           "audio": "phrases/L2-apple.m4a",      "answers": ["apple"] },
+    { "id": "L2-banana",     "level": 2, "el": "Θέλω μία μπανάνα!",               "translit": "Thelo mia banana!",                 "en": "I want a banana!",           "audio": "phrases/L2-banana.m4a",     "answers": ["banana"] },
+    { "id": "L2-mom-orange", "level": 2, "el": "Η μαμά θέλει ένα πορτοκάλι!",     "translit": "I mama theli ena portokali!",       "en": "Mom wants an orange!",       "audio": "phrases/L2-mom-orange.m4a", "answers": ["orange"] },
+    { "id": "L2-dad-grape",  "level": 2, "el": "Ο μπαμπάς θέλει ένα σταφύλι!",    "translit": "O babas theli ena stafili!",        "en": "Dad wants a grape!",         "audio": "phrases/L2-dad-grape.m4a",  "answers": ["grape"] },
+    { "id": "L2-strawberry", "level": 2, "el": "Θέλω μία φράουλα!",               "translit": "Thelo mia fraoula!",                "en": "I want a strawberry!",       "audio": "phrases/L2-strawberry.m4a", "answers": ["strawberry"] },
+    { "id": "L2-mom-watermelon", "level": 2, "el": "Η μαμά θέλει ένα καρπούζι!", "translit": "I mama theli ena karpouzi!",        "en": "Mom wants a watermelon!",    "audio": "phrases/L2-mom-watermelon.m4a", "answers": ["watermelon"] },
+    { "id": "L2-dad-lemon",  "level": 2, "el": "Ο μπαμπάς θέλει ένα λεμόνι!",     "translit": "O babas theli ena lemoni!",         "en": "Dad wants a lemon!",         "audio": "phrases/L2-dad-lemon.m4a",  "answers": ["lemon"] },
+    { "id": "L2-pear",       "level": 2, "el": "Θέλω ένα αχλάδι!",                "translit": "Thelo ena ahladi!",                 "en": "I want a pear!",             "audio": "phrases/L2-pear.m4a",       "answers": ["pear"] },
+    { "id": "L2-give-apple", "level": 2, "el": "Δώσε μου ένα μήλο!",              "translit": "Dose mou ena milo!",                "en": "Give me an apple!",          "audio": "phrases/L2-give-apple.m4a", "answers": ["apple"] },
+    { "id": "L2-give-grape", "level": 2, "el": "Δώσε μου ένα σταφύλι!",           "translit": "Dose mou ena stafili!",             "en": "Give me a grape!",           "audio": "phrases/L2-give-grape.m4a", "answers": ["grape"] },
+    { "id": "L2-for-me-strawberry", "level": 2, "el": "Μία φράουλα για μένα!",   "translit": "Mia fraoula gia mena!",             "en": "A strawberry for me!",       "audio": "phrases/L2-for-me-strawberry.m4a", "answers": ["strawberry"] },
+    { "id": "L2-for-me-orange", "level": 2, "el": "Ένα πορτοκάλι για μένα!",     "translit": "Ena portokali gia mena!",           "en": "An orange for me!",          "audio": "phrases/L2-for-me-orange.m4a",     "answers": ["orange"] },
+
+    { "id": "L3-apple-banana",     "level": 3, "el": "Θέλω ένα μήλο και μία μπανάνα!",        "translit": "Thelo ena milo kai mia banana!",         "en": "I want an apple and a banana!",        "audio": "phrases/L3-apple-banana.m4a",     "answers": ["apple", "banana"] },
+    { "id": "L3-strawberry-lemon", "level": 3, "el": "Βάλε μία φράουλα και ένα λεμόνι!",      "translit": "Vale mia fraoula kai ena lemoni!",       "en": "Put a strawberry and a lemon!",        "audio": "phrases/L3-strawberry-lemon.m4a", "answers": ["strawberry", "lemon"] },
+    { "id": "L3-orange-grape",     "level": 3, "el": "Θέλω ένα πορτοκάλι και ένα σταφύλι!",   "translit": "Thelo ena portokali kai ena stafili!",   "en": "I want an orange and a grape!",        "audio": "phrases/L3-orange-grape.m4a",     "answers": ["orange", "grape"] },
+    { "id": "L3-watermelon-pear",  "level": 3, "el": "Βάλε ένα καρπούζι και ένα αχλάδι!",     "translit": "Vale ena karpouzi kai ena ahladi!",      "en": "Put a watermelon and a pear!",         "audio": "phrases/L3-watermelon-pear.m4a",  "answers": ["watermelon", "pear"] },
+    { "id": "L3-mom-banana-strawberry", "level": 3, "el": "Η μαμά θέλει μία μπανάνα και μία φράουλα!", "translit": "I mama theli mia banana kai mia fraoula!", "en": "Mom wants a banana and a strawberry!", "audio": "phrases/L3-mom-banana-strawberry.m4a", "answers": ["banana", "strawberry"] },
+    { "id": "L3-dad-apple-orange", "level": 3, "el": "Ο μπαμπάς θέλει ένα μήλο και ένα πορτοκάλι!", "translit": "O babas theli ena milo kai ena portokali!", "en": "Dad wants an apple and an orange!",     "audio": "phrases/L3-dad-apple-orange.m4a", "answers": ["apple", "orange"] },
+    { "id": "L3-banana-pear",      "level": 3, "el": "Θέλω μία μπανάνα και ένα αχλάδι!",       "translit": "Thelo mia banana kai ena ahladi!",        "en": "I want a banana and a pear!",          "audio": "phrases/L3-banana-pear.m4a",    "answers": ["banana", "pear"] },
+    { "id": "L3-grape-lemon",      "level": 3, "el": "Βάλε ένα σταφύλι και ένα λεμόνι!",       "translit": "Vale ena stafili kai ena lemoni!",        "en": "Put a grape and a lemon!",             "audio": "phrases/L3-grape-lemon.m4a",    "answers": ["grape", "lemon"] },
+    { "id": "L3-strawberry-watermelon", "level": 3, "el": "Θέλω μία φράουλα και ένα καρπούζι!", "translit": "Thelo mia fraoula kai ena karpouzi!",     "en": "I want a strawberry and a watermelon!", "audio": "phrases/L3-strawberry-watermelon.m4a", "answers": ["strawberry", "watermelon"] },
+
+    { "id": "L4-big-apple",      "level": 4, "modifier": "big",   "el": "Θέλω ένα μεγάλο μήλο!",       "translit": "Thelo ena megalo milo!",       "en": "I want a big apple!",       "audio": "phrases/L4-big-apple.m4a",      "answers": ["apple"] },
+    { "id": "L4-big-watermelon", "level": 4, "modifier": "big",   "el": "Θέλω ένα μεγάλο καρπούζι!",   "translit": "Thelo ena megalo karpouzi!",   "en": "I want a big watermelon!",  "audio": "phrases/L4-big-watermelon.m4a", "answers": ["watermelon"] },
+    { "id": "L4-big-banana",     "level": 4, "modifier": "big",   "el": "Θέλω μία μεγάλη μπανάνα!",    "translit": "Thelo mia megali banana!",     "en": "I want a big banana!",      "audio": "phrases/L4-big-banana.m4a",     "answers": ["banana"] },
+    { "id": "L4-small-grape",    "level": 4, "modifier": "small", "el": "Θέλω ένα μικρό σταφύλι!",     "translit": "Thelo ena mikro stafili!",     "en": "I want a small grape!",     "audio": "phrases/L4-small-grape.m4a",    "answers": ["grape"] },
+    { "id": "L4-small-strawberry","level": 4,"modifier": "small", "el": "Θέλω μία μικρή φράουλα!",     "translit": "Thelo mia mikri fraoula!",     "en": "I want a small strawberry!","audio": "phrases/L4-small-strawberry.m4a","answers": ["strawberry"] },
+    { "id": "L4-small-pear",     "level": 4, "modifier": "small", "el": "Θέλω ένα μικρό αχλάδι!",      "translit": "Thelo ena mikro ahladi!",      "en": "I want a small pear!",      "audio": "phrases/L4-small-pear.m4a",     "answers": ["pear"] },
+    { "id": "L4-lots-apples",    "level": 4, "modifier": "lots",  "el": "Θέλω πολλά μήλα!",            "translit": "Thelo polla mila!",            "en": "I want lots of apples!",    "audio": "phrases/L4-lots-apples.m4a",    "answers": ["apple"] },
+    { "id": "L4-lots-lemons",    "level": 4, "modifier": "lots",  "el": "Θέλω πολλά λεμόνια!",         "translit": "Thelo polla lemonia!",         "en": "I want lots of lemons!",    "audio": "phrases/L4-lots-lemons.m4a",    "answers": ["lemon"] },
+    { "id": "L4-big-orange",     "level": 4, "modifier": "big",   "el": "Θέλω ένα μεγάλο πορτοκάλι!",  "translit": "Thelo ena megalo portokali!",  "en": "I want a big orange!",      "audio": "phrases/L4-big-orange.m4a",     "answers": ["orange"] },
+    { "id": "L4-small-lemon",    "level": 4, "modifier": "small", "el": "Θέλω ένα μικρό λεμόνι!",      "translit": "Thelo ena mikro lemoni!",      "en": "I want a small lemon!",     "audio": "phrases/L4-small-lemon.m4a",    "answers": ["lemon"] },
+    { "id": "L4-lots-grapes",    "level": 4, "modifier": "lots",  "el": "Θέλω πολλά σταφύλια!",        "translit": "Thelo polla stafilia!",        "en": "I want lots of grapes!",    "audio": "phrases/L4-lots-grapes.m4a",    "answers": ["grape"] },
+    { "id": "L4-lots-strawberries", "level": 4, "modifier": "lots", "el": "Θέλω πολλές φράουλες!",   "translit": "Thelo polles fraoules!",       "en": "I want lots of strawberries!","audio": "phrases/L4-lots-strawberries.m4a", "answers": ["strawberry"] }
+  ],
+  "fruits": [
+    { "id": "apple",      "el": "μήλο",      "translit": "milo",      "emoji": "🍎", "image": "fruit/apple.jpg",      "audio": "fruit/apple.m4a" },
+    { "id": "banana",     "el": "μπανάνα",   "translit": "banana",    "emoji": "🍌", "image": "fruit/banana.jpg",     "audio": "fruit/banana.m4a" },
+    { "id": "orange",     "el": "πορτοκάλι", "translit": "portokali", "emoji": "🍊", "image": "fruit/orange.jpg",     "audio": "fruit/orange.m4a" },
+    { "id": "grape",      "el": "σταφύλι",   "translit": "stafili",   "emoji": "🍇", "image": "fruit/grape.jpg",      "audio": "fruit/grape.m4a" },
+    { "id": "strawberry", "el": "φράουλα",   "translit": "fraoula",   "emoji": "🍓", "image": "fruit/strawberry.jpg", "audio": "fruit/strawberry.m4a" },
+    { "id": "watermelon", "el": "καρπούζι",  "translit": "karpouzi",  "emoji": "🍉", "image": "fruit/watermelon.jpg", "audio": "fruit/watermelon.m4a" },
+    { "id": "lemon",      "el": "λεμόνι",    "translit": "lemoni",    "emoji": "🍋", "image": "fruit/lemon.jpg",      "audio": "fruit/lemon.m4a" },
+    { "id": "pear",       "el": "αχλάδι",    "translit": "ahladi",    "emoji": "🍐", "image": "fruit/pear.jpg",       "audio": "fruit/pear.m4a" }
+  ],
+  "silly": [
+    { "id": "sock",       "el": "κάλτσα",        "translit": "kaltsa",        "emoji": "🧦", "reactionEl": "Όχι κάλτσα!",        "reactionTranslit": "Ohi kaltsa!",        "reactionAudio": "feedback/no-sock.m4a" },
+    { "id": "flipflop",   "el": "σαγιονάρα",     "translit": "sagionara",     "emoji": "🩴", "reactionEl": "Όχι σαγιονάρα!",     "reactionTranslit": "Ohi sagionara!",     "reactionAudio": "feedback/no-flipflop.m4a" },
+    { "id": "toothbrush", "el": "οδοντόβουρτσα", "translit": "odontovourtsa", "emoji": "🪥", "reactionEl": "Όχι οδοντόβουρτσα!", "reactionTranslit": "Ohi odontovourtsa!", "reactionAudio": "feedback/no-toothbrush.m4a" }
+  ]
+}
