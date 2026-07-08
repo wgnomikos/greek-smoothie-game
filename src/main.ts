@@ -1,7 +1,7 @@
 import './style.css';
 import { registerSW } from 'virtual:pwa-register';
-import manifestData from './data/manifest.json';
 import type { Manifest, PhraseLevel } from './lib/types';
+import { loadManifest } from './lib/content';
 import { renderHome } from './screens/home';
 import { renderRound } from './screens/round';
 import { renderEnd } from './screens/end';
@@ -11,7 +11,9 @@ import { getProfile, clearProfile, type Profile } from './lib/storage';
 
 registerSW({ immediate: true });
 
-const manifest = manifestData as Manifest;
+// Loaded at runtime, not bundled, so manifest edits go live without a rebuild.
+// See src/lib/content.ts. Assigned in the boot IIFE before any round renders.
+let manifest: Manifest;
 const app = document.getElementById('app')!;
 
 let currentLevel: PhraseLevel = 1;
@@ -68,8 +70,17 @@ function goEnd(correctCount: number, fruitsAdded: string[]): void {
 // working?" diagnosis without sitting next to the kid.
 (async () => {
   const params = new URLSearchParams(window.location.search);
+
+  // Fetch content first. loadManifest never rejects (network → cache →
+  // bundled), so manifest is always a valid, non-empty Manifest here.
+  const load = await loadManifest();
+  manifest = load.manifest;
+  if (load.source !== 'network') {
+    console.warn(`manifest loaded from ${load.source} fallback`, load.error);
+  }
+
   if (params.get('debug') === '1') {
-    renderDebug(app);
+    renderDebug(app, load);
     return;
   }
   const stored = await getProfile();

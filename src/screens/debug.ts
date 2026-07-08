@@ -1,5 +1,6 @@
 import { getTrialEvents, clearTrialEvents, type TrialEvent } from '../lib/storage';
 import { getGreekVoiceInfo } from '../lib/tts';
+import type { ManifestLoad } from '../lib/content';
 
 // Hidden diagnostics view — shown when the URL has ?debug=1. Lets you
 // peek at every trial outcome since IndexedDB last cleared. Per-phrase
@@ -38,7 +39,23 @@ function summarize(events: TrialEvent[]): PhraseAccuracy[] {
   return [...byPhrase.values()].sort((a, b) => a.correct / a.attempts - b.correct / b.attempts);
 }
 
-export async function renderDebug(root: HTMLElement): Promise<void> {
+export async function renderDebug(root: HTMLElement, load?: ManifestLoad): Promise<void> {
+  const contentLine = load
+    ? (() => {
+        const ok = load.source === 'network';
+        const bg = ok ? '#2a7d4f' : '#b8860b';
+        const label =
+          load.source === 'network'
+            ? `live (fetched ${load.fetchedAt?.slice(11, 19) ?? ''} UTC)`
+            : load.source === 'cache'
+              ? 'cached (offline, showing last good)'
+              : 'bundled (offline, no cache yet)';
+        return `<div style="font-size:14px; color:#fff; background:${bg}; padding:8px 12px; border-radius:8px;">
+            Content: <strong>${label}</strong> · ${load.manifest.phrases.length} phrases, ${load.manifest.fruits.length} fruits
+            ${load.error && !ok ? `<br><span style="font-size:12px; opacity:.85;">${load.error}</span>` : ''}
+          </div>`;
+      })()
+    : '';
   const voice = await getGreekVoiceInfo();
   const voiceLine = voice
     ? `<div style="font-size:14px; color:#2a7d4f;">TTS voice: <strong>${voice.name}</strong> (${voice.lang}) ✓</div>`
@@ -71,6 +88,7 @@ export async function renderDebug(root: HTMLElement): Promise<void> {
   root.innerHTML = `
     <div class="screen debug-screen" style="text-align:left; padding: 24px; gap: 16px; justify-content:flex-start; overflow-y:auto;">
       <h1 style="font-size:28px; margin:0; color:#e85a8c;">Debug · session log</h1>
+      ${contentLine}
       ${voiceLine}
       <div style="font-size:14px; color:#666;">
         ${events.length} events recorded · overall accuracy ${accuracy}%

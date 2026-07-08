@@ -27,6 +27,25 @@ runs on the standard runtime and scripts, with no frontier-model dependence.
 - Transliteration uses `h` never `ch` (ahladi, Ohi). Object nouns take
   indefinite articles (ena/mia) per the established phrase patterns.
 
+## Content updates go live immediately (meals-hub model)
+
+- The app fetches `src/data/manifest.json` at RUNTIME from raw.githubusercontent.com
+  (main branch), cache-busted, on every open. See `src/lib/content.ts`. Fallback
+  chain is network then IndexedDB last-good then the bundled build-time copy, so
+  the app can never fail to boot.
+- To add or edit PHRASES (using existing fruits): edit `src/data/manifest.json`,
+  run `npm run verify` (the Greek lint gate travels with the content), commit,
+  and push. The kids' iPads pick it up on the next open with NO Vite rebuild and
+  NO waiting on the Pages deploy. This is the whole point: content is a pure-data
+  push a delegated Opus/Sonnet session (or a script) can do behind the gate.
+- What is NOT instant: a genuinely NEW fruit needs a new inline SVG in
+  `src/lib/fruit-illustrations.ts`, which is code and still needs a build + deploy.
+  Recorded audio (m4a) is a static asset served from Pages, so it needs the deploy
+  to land, but a new phrase referencing a not-yet-recorded m4a just uses TTS until
+  then.
+- The `?debug=1` panel shows whether content loaded live/cached/bundled and the
+  phrase count, so "did my update land?" is answerable at a glance.
+
 ## Workflow
 
 - Work from one `WORKPLAN.md` card per session when cards exist. Read the card
