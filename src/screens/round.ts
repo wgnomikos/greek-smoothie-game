@@ -194,6 +194,7 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
         <div class="blender-wrap" id="blender-wrap">${blenderSvg('empty')}</div>
       </div>
       <button class="play-button" id="play" aria-label="Play the phrase">▶</button>
+      <div class="audio-hint audio-hint-off" id="audio-hint">🔇 Πάτα ▶ για ήχο<span>turn up the volume and check the iPad silent switch</span></div>
       <div class="prompt-phrase hidden" id="prompt">
         <div class="prompt-el" id="prompt-el"></div>
         <div class="prompt-translit" id="prompt-translit"></div>
@@ -209,6 +210,7 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
   const dadWrap = root.querySelector<HTMLElement>('#dad-wrap')!;
   const blenderWrap = root.querySelector<HTMLElement>('#blender-wrap')!;
   const playBtn = root.querySelector<HTMLButtonElement>('#play')!;
+  const audioHint = root.querySelector<HTMLElement>('#audio-hint')!;
   const promptBox = root.querySelector<HTMLElement>('#prompt')!;
   const promptElText = root.querySelector<HTMLElement>('#prompt-el')!;
   const promptTranslit = root.querySelector<HTMLElement>('#prompt-translit')!;
@@ -216,6 +218,10 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
 
   function setDad(expression: DadExpression): void {
     dadWrap.innerHTML = dadSvg(expression);
+  }
+
+  function setAudioHint(show: boolean): void {
+    audioHint.classList.toggle('audio-hint-off', !show);
   }
 
   // L4 modifier vocabulary — controls both the fly-clone end scale and the
@@ -341,6 +347,7 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
     promptTranslit.style.display = settings.showTranslit ? '' : 'none';
     promptBox.classList.add('hidden');
     promptBox.classList.remove('revealed');
+    setAudioHint(false);
     setDad('asking');
 
     // L1 audio-gate: hide the choice tiles until the kid has heard the phrase
@@ -388,13 +395,17 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
     // L2-L4 the tiles are always visible — gate's only purpose is to
     // discourage image-elimination at the easiest level.
     const playAndReveal = async () => {
-      const playing = playWord(phrase.audio, phrase.el);
+      // 6s backstop is long enough for any phrase to finish (so the gate still
+      // reveals AFTER the audio, as intended) but still catches a true hang.
+      // 1.5s was shorter than the L1 phrase, which defeated the gate.
+      const spoke = await withTimeout(playWord(phrase.audio, phrase.el), 6000);
       if (useAudioGate) {
-        // Reveal after the phrase plays, but never wait longer than the
-        // timeout — a stuck utterance must not strand the tiles hidden.
-        await withTimeout(playing, 1500);
         choicesEl.classList.remove('hidden-gate');
       }
+      // spoke === false (silent/failed) or undefined (timed out) → the kid
+      // likely heard nothing. Surface a listen hint so a muted iPad doesn't
+      // turn L1 into an unwinnable, soundless trial. A working replay clears it.
+      setAudioHint(spoke === false || spoke === undefined);
     };
     playBtn.onclick = playAndReveal;
     // Auto-play once on trial start.
@@ -431,6 +442,12 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
           const isLastTarget = remainingTargets.size === 0;
           if (isLastTarget) {
             // Final tap of the trial — reveal phrase text + bump mastery + advance.
+            // Lock the whole grid first: during the ~1.2s win animation an
+            // excited kid tapping other tiles would otherwise register as wrong
+            // taps and could strip the earned celebration from a clean round.
+            choicesEl.querySelectorAll<HTMLButtonElement>('.choice-tile')
+              .forEach((t) => t.setAttribute('disabled', 'true'));
+            setAudioHint(false);
             promptBox.classList.remove('hidden');
             promptBox.classList.add('revealed');
             setDad('happy');

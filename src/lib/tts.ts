@@ -39,7 +39,11 @@ export async function getGreekVoiceInfo(): Promise<{ name: string; lang: string 
   return voice ? { name: voice.name, lang: voice.lang } : null;
 }
 
-export async function speakGreek(text: string): Promise<void> {
+// Resolves to TRUE only if the utterance actually started speaking. On iOS a
+// standalone PWA can fail to produce sound (or the ringer switch mutes it)
+// while events still resolve; callers use the boolean to show a "tap play"
+// hint so a silent phrase never leaves the kid stuck.
+export async function speakGreek(text: string): Promise<boolean> {
   return new Promise((resolve) => {
     speechSynthesis.cancel(); // stop anything in-flight
     pickGreekVoice().then((voice) => {
@@ -48,13 +52,15 @@ export async function speakGreek(text: string): Promise<void> {
       if (voice) utter.voice = voice;
       utter.rate = 0.85; // slightly slow for kids
       utter.pitch = 1.0;
-      utter.onend = () => resolve();
-      utter.onerror = () => resolve();
+      let started = false;
+      utter.onstart = () => { started = true; };
+      utter.onend = () => resolve(started);
+      utter.onerror = () => resolve(false);
       speechSynthesis.speak(utter);
     });
   });
 }
 
-export async function speakBravo(): Promise<void> {
+export async function speakBravo(): Promise<boolean> {
   return speakGreek('Μπράβο!');
 }

@@ -93,30 +93,34 @@ import { speakGreek } from './tts';
 import { hasAudio } from './assets';
 import { audioUrl } from './assetUrl';
 
-export async function playWord(audioRelative: string, fallbackText: string): Promise<void> {
+// Resolves to TRUE if sound was actually produced (recorded clip played, or
+// TTS actually started). FALSE means silence (failed load, or a muted/flaky
+// speechSynthesis) — callers surface a listen hint so a silent phrase never
+// strands the kid.
+export async function playWord(audioRelative: string, fallbackText: string): Promise<boolean> {
   if (hasAudio(audioRelative)) {
     return play(audioUrl(audioRelative));
   }
   return speakGreek(fallbackText);
 }
 
-export function play(url: string): Promise<void> {
+export function play(url: string): Promise<boolean> {
   return new Promise((resolve) => {
     const c = getCtx();
     const buf = buffers.get(url);
     if (!buf) {
       // Not preloaded — load then play. Fail OPEN: a 404 or decode error
-      // resolves (silent) rather than leaving the promise pending forever,
-      // which would hang any caller that awaits it.
+      // resolves false (silent) rather than leaving the promise pending
+      // forever, which would hang any caller that awaits it.
       preload(url)
         .then(() => play(url).then(resolve))
-        .catch(() => resolve());
+        .catch(() => resolve(false));
       return;
     }
     const src = c.createBufferSource();
     src.buffer = buf;
     src.connect(c.destination);
-    src.onended = () => resolve();
+    src.onended = () => resolve(true);
     src.start(0);
   });
 }
