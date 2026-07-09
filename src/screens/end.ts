@@ -3,8 +3,9 @@ import { playWord } from '../lib/audio';
 import { dadSvg, blenderSvg, glassSvg } from '../lib/illustrations';
 
 export interface EndOpts {
-  correctCount: number;
+  correctCount: number; // clean trials (solved with no wrong tap)
   totalCount: number;
+  celebrate: boolean;   // earned the top-tier end screen (umbrella + sprinkles)
   fruitsAdded: string[];
   onAgain: () => void;
   onHome: () => void;
@@ -58,7 +59,7 @@ function smoothieColor(fruitIds: string[]): string {
 
 export async function renderEnd(root: HTMLElement, opts: EndOpts): Promise<void> {
   const fillColor = smoothieColor(opts.fruitsAdded);
-  const allRight = opts.correctCount === opts.totalCount;
+  const allRight = opts.celebrate;
   const headline = allRight ? '🎉 Μπράβο!' : `${opts.correctCount}/${opts.totalCount}`;
 
   // Perfect-round extras — drawn only when the kid clears all 6. Sprinkles

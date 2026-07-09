@@ -46,7 +46,8 @@ function goRound(): void {
   renderRound(app, {
     manifest,
     level: currentLevel,
-    onComplete: (correctCount, fruitsAdded) => goEnd(correctCount, fruitsAdded),
+    onComplete: (cleanCount, totalCount, fruitsAdded, celebrate) =>
+      goEnd(cleanCount, totalCount, fruitsAdded, celebrate),
     onAbort: () => goHome(),
   }).catch((err) => {
     console.error('Round failed:', err);
@@ -54,10 +55,11 @@ function goRound(): void {
   });
 }
 
-function goEnd(correctCount: number, fruitsAdded: string[]): void {
+function goEnd(cleanCount: number, totalCount: number, fruitsAdded: string[], celebrate: boolean): void {
   renderEnd(app, {
-    correctCount,
-    totalCount: 6,
+    correctCount: cleanCount,
+    totalCount,
+    celebrate,
     fruitsAdded,
     onAgain: () => goRound(),
     onHome: () => goHome(),

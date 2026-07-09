@@ -1,5 +1,5 @@
 import type { Phrase, PhraseModifier, Fruit, SillyItem, Manifest } from '../lib/types';
-import { playChime, playWord } from '../lib/audio';
+import { playChime, playWord, withTimeout } from '../lib/audio';
 import { speakGreek } from '../lib/tts';
 import { hasImage } from '../lib/assets';
 import { imageUrl } from '../lib/assetUrl';
@@ -32,9 +32,19 @@ const CATEGORY_ID = 'smoothie';
 export interface RoundOpts {
   manifest: Manifest;
   level: 1 | 2 | 3 | 4;
-  onComplete: (correctCount: number, fruitsAdded: string[]) => void;
+  // cleanCount = trials solved with no wrong tap; totalCount = trials in the
+  // round; celebrate = earned the top-tier end screen (umbrella + sprinkles).
+  onComplete: (cleanCount: number, totalCount: number, fruitsAdded: string[], celebrate: boolean) => void;
   onAbort: () => void;
 }
+
+// A round earns the celebration (umbrella + sprinkles + "Μπράβο!") when total
+// wrong taps across the round are at or below this. Deliberately LENIENT: a
+// binary zero-wrong bar would make the reward almost unreachable for a
+// 4-year-old, which is worse than the always-reward bug it replaces. This is a
+// tunable to revisit after watching the kids play, not a fixed design choice.
+// Silly-distractor taps are the comedy beat and do NOT count as wrong taps.
+const PERFECT_MAX_MISFIRES = 1;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = arr.slice();
@@ -151,7 +161,8 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
   const sessionProfile = (await getProfile()) ?? ('ezra' as Profile);
   const settings = await getSettings();
   let trial = 0;
-  let correctCount = 0;
+  let cleanTrials = 0;   // trials solved with no wrong tap
+  let roundMisfires = 0; // total wrong-fruit / wrong-modifier taps this round
   const fruitsAdded: string[] = [];
 
   function emitTrialEvent(
@@ -317,6 +328,7 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
     const remainingTargets = new Set(targetFruits.map((f) => f.id));
     const mastery = await getMastery(CATEGORY_ID, phrase.id);
     let wrongStreak = 0;
+    let trialMisfire = false; // any wrong tap this trial → not a clean solve
 
     const choices = buildChoices(opts.manifest, targetFruits, opts.level, phrase.modifier);
 
@@ -376,8 +388,11 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
     // L2-L4 the tiles are always visible — gate's only purpose is to
     // discourage image-elimination at the easiest level.
     const playAndReveal = async () => {
-      await playWord(phrase.audio, phrase.el);
+      const playing = playWord(phrase.audio, phrase.el);
       if (useAudioGate) {
+        // Reveal after the phrase plays, but never wait longer than the
+        // timeout — a stuck utterance must not strand the tiles hidden.
+        await withTimeout(playing, 1500);
         choicesEl.classList.remove('hidden-gate');
       }
     };
@@ -386,11 +401,10 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
     playAndReveal();
 
     async function advance(): Promise<void> {
-      correctCount++;
       trial++;
       if (trial >= order.length) {
         await logRoundCompletion();
-        opts.onComplete(correctCount, fruitsAdded);
+        opts.onComplete(cleanTrials, order.length, fruitsAdded, roundMisfires <= PERFECT_MAX_MISFIRES);
       } else {
         showTrial();
       }
@@ -422,11 +436,14 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
             setDad('happy');
             playChime();
             await flyFruitToBlender(btn, tappedId, phrase.modifier);
-            await playWord(tappedFruit.audio, tappedFruit.el);
+            // Fire-and-forget the spoken fruit name: the chime + animation
+            // already signal "correct," so progression must not wait on audio.
+            void playWord(tappedFruit.audio, tappedFruit.el);
             // For "lots" record the fruit 5x so the end-screen smoothie color
             // reflects the multi-copy effect.
             const copies = phrase.modifier === 'lots' ? 5 : 1;
             for (let i = 0; i < copies; i++) fruitsAdded.push(tappedId);
+            if (!trialMisfire) cleanTrials++;
             await setMastery(CATEGORY_ID, phrase.id, mastery + 1);
             await new Promise((r) => setTimeout(r, 600));
             await advance();
@@ -436,7 +453,7 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
             // needs to find the remaining target.
             playChime();
             await flyFruitToBlender(btn, tappedId, phrase.modifier);
-            await playWord(tappedFruit.audio, tappedFruit.el);
+            void playWord(tappedFruit.audio, tappedFruit.el);
             fruitsAdded.push(tappedId);
             // Tiny pause then keep listening for the second tap.
           }
@@ -448,7 +465,8 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
           btn.classList.add('shake');
           setDad('bleh');
           if (silly) {
-            await speakGreek(silly.reactionEl);
+            // Fire-and-forget so a stuck utterance can't block the reset below.
+            void speakGreek(silly.reactionEl);
           }
           setTimeout(() => {
             btn.classList.remove('shake');
@@ -465,6 +483,8 @@ export async function renderRound(root: HTMLElement, opts: RoundOpts): Promise<v
           emitTrialEvent(phrase.id, wrongKind, tappedId, tappedModifier);
           btn.classList.add('shake');
           wrongStreak++;
+          roundMisfires++;
+          trialMisfire = true;
           if (wrongStreak >= 2 && mastery > 0) {
             await setMastery(CATEGORY_ID, phrase.id, mastery - 1);
           }

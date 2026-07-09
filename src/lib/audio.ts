@@ -105,8 +105,12 @@ export function play(url: string): Promise<void> {
     const c = getCtx();
     const buf = buffers.get(url);
     if (!buf) {
-      // Not preloaded — fire-and-forget load + play.
-      preload(url).then(() => play(url).then(resolve));
+      // Not preloaded — load then play. Fail OPEN: a 404 or decode error
+      // resolves (silent) rather than leaving the promise pending forever,
+      // which would hang any caller that awaits it.
+      preload(url)
+        .then(() => play(url).then(resolve))
+        .catch(() => resolve());
       return;
     }
     const src = c.createBufferSource();
@@ -115,4 +119,11 @@ export function play(url: string): Promise<void> {
     src.onended = () => resolve();
     src.start(0);
   });
+}
+
+// Resolve when `p` settles OR after `ms`, whichever comes first. Used to keep
+// gameplay (tile reveal, trial advance) from ever blocking on audio that may
+// never resolve — a stuck speechSynthesis utterance or a slow/failed decode.
+export function withTimeout<T>(p: Promise<T>, ms: number): Promise<T | void> {
+  return Promise.race([p, new Promise<void>((r) => setTimeout(r, ms))]);
 }
